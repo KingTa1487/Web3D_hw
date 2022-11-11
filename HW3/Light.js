@@ -68,7 +68,7 @@ function makelight(x, z, tx, tz){
 		spotLight.position.set( x, 145, z );
 		spotLight.castShadow = true; // 光源產生陰影
 		
-		const pointlight = new THREE.PointLight(0xFEF4B5, 0.1);
+		const pointlight = new THREE.PointLight(0xCEC8A0, 0.1);
 		pointlight.position.set(x, 145, z);
 	
 		let target = new THREE.Object3D();
