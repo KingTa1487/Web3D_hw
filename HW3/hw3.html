@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <div id="info">HW3</div>
+<a href="https://i.imgur.com/hGgPHXg.jpg">平面設計圖</a>
+<a href="https://i.imgur.com/JJ35gIQ.png">燈線</a>
 <script src="https://threejs.org/build/three.min.js"></script>
 <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 
@@ -127,6 +129,10 @@
 		walls.add(w9);
 		w9.position.set(-392.5, 50, -105);
 		
+		//light
+		makelight(-430, 250, -480, 250);
+		makelight(-430, -250, -480, -250);
+		makelight(-390, 155, -390, 110);	
 		
 		//chairs
 		//1
@@ -177,7 +183,6 @@
 
 		requestAnimationFrame(animate);
 		renderer.render(scene, camera);
-
 	}
 </script>
 </body>
