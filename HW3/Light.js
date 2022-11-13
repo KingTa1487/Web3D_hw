@@ -56,6 +56,28 @@ class Light{
 		this.tipe.add(this.tipe1, this.tipe2, this.tipe3, this.tipe4, this.tipe5
 		, this.tipe6, this.tipe7, this.tipe8, this.tipe9, this.tipe10, this.tipe11, this.tipe12);
 		
+		//light
+		this.switchL = true;
+		this.light = new THREE.Group();
+		
+		//1
+		this.light.add(makelight(-430, 250, -480, 250));
+		//2
+		this.light.add(makelight(-430, -250, -480, -250));
+		//3
+		this.light.add(makelight(-390, 155, -390, 110));
+		//4
+		this.light.add(makelight(0, 280, 0, 260));
+		//5
+		this.light.add(makelight(220, 200, 280, 200));
+		//6
+		this.light.add(makelight(415, 200, 480, 200));
+		//7
+		this.light.add(makelight(250, -415, 250, -480));
+		//8
+		this.light.add(makelight(-22, -230, 10, -230));
+		//9
+		this.light.add(makelight(300, -108, 300, -30));
 		
 	}
 	
@@ -63,19 +85,29 @@ class Light{
 }
 
 function makelight(x, z, tx, tz){
-									//color 颜色, intensity 强度, distance 距离, angle 散射角, penumbra 衰减百分比, decay 衰减
-		const spotLight = new THREE.SpotLight(  0xffffff, 10, 150, 0.3, 0.25, 2);
-		spotLight.position.set( x, 145, z );
-		spotLight.castShadow = true; // 光源產生陰影
 		
-		const pointlight = new THREE.PointLight(0xCEC8A0, 0.1);
-		pointlight.position.set(x, 145, z);
+	let light = new THREE.Group();
+		
+	//color 颜色, intensity 强度, distance 距离, angle 散射角, penumbra 衰减百分比, decay 衰减
+	const spotLight = new THREE.SpotLight(  0xffffff, 10, 150, 0.3, 0.5, 2);
+	spotLight.position.set( x, 145, z );
+	spotLight.castShadow = true; // 光源產生陰影
+		
+	const pointlight = new THREE.PointLight(0xCEC8A0, 0.03);
+	pointlight.position.set(x, 145, z);
 	
-		let target = new THREE.Object3D();
-		spotLight.target.position.set(tx, 80, tz);
-		scene.add(spotLight, spotLight.target, pointlight);
+	let target = new THREE.Object3D();
+	spotLight.target.position.set(tx, 80, tz);
 		
-		const spotLightHelper = new THREE.SpotLightHelper( spotLight );
+	light.add(spotLight, spotLight.target, pointlight);
 		
-		//scene.add( spotLightHelper);
+	return light;
+		
+	//const spotLightHelper = new THREE.SpotLightHelper( spotLight );
+	//scene.add( spotLightHelper);
+}
+
+function SP(sl){
+	console.log(66);
+	
 }
