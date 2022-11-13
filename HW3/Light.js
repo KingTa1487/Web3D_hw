@@ -107,7 +107,11 @@ function makelight(x, z, tx, tz){
 	//scene.add( spotLightHelper);
 }
 
-function SP(sl){
-	console.log(66);
-	
+function SP(light){
+	if(light.switchL === false){
+		scene.remove(light.light);
+	}
+	if(light.switchL === true){
+		scene.add(light.light);
+	}
 }
