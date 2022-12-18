@@ -4,6 +4,7 @@
 <a href="https://i.imgur.com/hGgPHXg.jpg">平面設計圖</a><br>
 <a href="https://i.imgur.com/plm2usu.png">燈線</a><br>
 <button id='turn'>power</button>
+<button id='switch'>switch view</button>
 </div>
 <head>	
 
@@ -53,7 +54,7 @@
 	var force = new THREE.Vector3();
 	var power = 0.5, angle = 0;
 	
-	var view1st = false;
+	var view1st = true;
 	
 	init();
 	animate();
@@ -80,8 +81,10 @@
 
 		camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
 		camera.position.set(0, 1000, 800) ; // camera at (0,0,500)
+		camera3rd = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+		
 		let controls = new THREE.OrbitControls(camera, renderer.domElement);
-
+		controls.enableKeys = false;
 		////////////////////////////////////////////////////////
 		const light = new THREE.AmbientLight( 0xcccccc );	//環境光 
 		
@@ -120,9 +123,21 @@
 		chairs.children[3].position.set(250, 0, -260);
 		
 		scene.add (floor, chairs, walls.walls, human);
+		
+		
+		//視角
+		cameraHelper = makeCameraHelper();
+		scene.add (cameraHelper);
 	}
 	
-	
+	//參觀者視角
+	function makeCameraHelper() {
+		var cameraModel = new THREE.Group();
+		var body = new THREE.Mesh (new THREE.BoxGeometry(1,1,1), new THREE.MeshNormalMaterial());
+		cameraModel.add (body);
+  
+		return cameraModel;
+	}
 	
 	function buildChair(l, w) {
 		var group = new THREE.Group();
@@ -180,8 +195,22 @@
 		human.position.copy(pos);
 		human.rotation.y = angle;
 
+		////////camera
+		// third person camera
+		var thirdPos = human.localToWorld (new THREE.Vector3(0 ,0 ,0));
+		var thirdAt = human.localToWorld (new THREE.Vector3(0, 80, 0));
+		camera3rd.position.copy (thirdPos);
+		camera3rd.lookAt (thirdAt);
+			
+		cameraHelper.position.copy (camera3rd.position);
+		cameraHelper.quaternion.copy (camera3rd.quaternion);
+   
+		if (view1st)
+			renderer.render (scene, camera3rd);
+		else
+			renderer.render (scene, camera);
+			
 		requestAnimationFrame(animate);
-		renderer.render(scene, camera);
 	}
 </script>
 </body>
