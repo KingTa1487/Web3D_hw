@@ -1,0 +1,151 @@
+<html>
+<head>
+	<title>HW5</title>
+</head>
+<body>
+
+<div style="margin: 10px;">
+	<input id="num" value="1" style="width:30px;"> ! 	
+	<button id="btn" style="margin: 0 4px;">=</button>
+	<span id="resultSpan"></span>
+	
+	</br><button id='big'>bigger</button>
+	<button id='small'>smaller</button>
+
+</div>
+<div id="container" style="margin-top: 20px; height: 600px; width: 800px; border: solid 1px black;">
+</div>
+
+<script src="https://threejs.org/build/three.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<audio src="tambourine-hit-2.mp3" id='hit'></audio>
+<script>
+
+$('#num').change ( function() {
+   console.log ( $(this).val() ) ; // test & verify
+});
+
+$("#btn").click(function(){
+	var num = parseInt($("#num").val(), 10);
+	let result = "";
+	var max = 30;
+
+	if(num > max) {
+		alert("input too large number! must < "+max);
+		$("#num").val(max);
+		num = max;
+	}
+
+	// Call api: Need to be replaced by a public ip address
+	$.get( "http://127.0.0.1:1337/api?argv="+ num, function( data ) {
+		if(data && data.output){
+			result = parseInt(data.output, 10);
+			$("#resultSpan").text(result);
+
+			
+			
+		}
+	});
+
+
+});
+
+$('#big').click( function() {
+	radius *= 1.5;
+	changeradius(radius);	
+});
+$('#small').click( function(){	
+	radius /= 1.5;
+	changeradius(radius);		
+});
+
+
+$('#radius').change(function() {
+  $('#radiusPrint').text($(this).val());
+});
+
+
+var scene, camera, renderer;
+var raycaster = new THREE.Raycaster();	
+var obj = new THREE.Object3D();
+var border;
+var circle, pos, vel, radius = 1;
+var result;
+
+init();
+animate();
+
+function init() {
+	scene = new THREE.Scene();
+	let ww = $('#container').width();
+	let hh = $('#container').height();
+	camera = new THREE.PerspectiveCamera( 100, ww/hh, 1, 1000 );
+	
+	renderer = new THREE.WebGLRenderer();
+	renderer.setSize (ww, hh);
+	
+	renderer.setClearColor( 0xffffff, 1);
+	$("#container").append( renderer.domElement );
+	camera.position.z = 100;
+	
+	///////////////////////
+	let geometry = new THREE.BufferGeometry();
+	let points = [];
+	points.push(
+		new THREE.Vector3(-80, -80, 0),
+		new THREE.Vector3(80, -80, 0),
+		new THREE.Vector3(80, 80, 0),
+		new THREE.Vector3(-80, 80, 0),
+		new THREE.Vector3(-80, -80, 0));
+		geometry.setFromPoints(points);
+		border = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+		color: 'blue'
+	}));
+	border.position.set(-60, -20, 0);
+	
+	circle = new THREE.Mesh(new THREE.CircleGeometry(10, 20, 20), new THREE.MeshBasicMaterial({color: 'yellow'}));	
+	pos = new THREE.Vector3();
+	vel = new THREE.Vector3(10, 20);
+	
+	scene.add(border, circle);
+	
+	//createShape(1);
+	//scene.add(obj);
+	$("#resultSpan").text("1");
+	
+}
+
+function changeradius(r){
+	circle.scale.set(r, r, 1);
+}
+
+
+
+
+function animate() {
+	var dt = 0.05;
+	requestAnimationFrame(animate);
+	renderer.render(scene, camera);
+
+	pos.add(vel.clone().multiplyScalar(dt));
+	if (pos.x > 20-10*radius || pos.x < -140+10*radius){
+		vel.x *= -1;
+		circle.material.color.setHSL (Math.random()*360, 0.7, 0.5);
+
+	}
+	if (pos.y > 60-10*radius || pos.y < -100+10*radius){
+		vel.y *= -1;
+		circle.material.color.setHSL (Math.random()*360, 0.7, 0.5);
+	}
+	
+
+	circle.position.copy(pos);
+	//console.log(circle.position)
+}
+
+
+
+</script>
+</body>
+</html>
