@@ -8,12 +8,12 @@ app.get('/', function(req, res){
 
 app.get ('/api', function (req, res) {
 
-	console.log ('url:' + req.url);
+	console.log ('url(radius):' + req.url);
 
 	var argv = req.query.argv; // ("argv");
 	console.log (argv);
 		
-	shelljs.exec('factorial.exe ' + argv, function(status, output) {
+	shelljs.exec('OBB.exe ' + argv, function(status, output) {
 	  console.log('Exit status:', status);
 		  
           var output = {

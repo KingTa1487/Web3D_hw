@@ -5,8 +5,6 @@
 <body>
 
 <div style="margin: 10px;">
-	<input id="num" value="1" style="width:30px;"> ! 	
-	<button id="btn" style="margin: 0 4px;">=</button>
 	<span id="resultSpan"></span>
 	
 	</br><button id='big'>bigger</button>
@@ -26,7 +24,7 @@ $('#num').change ( function() {
    console.log ( $(this).val() ) ; // test & verify
 });
 
-$("#btn").click(function(){
+/*$("#btn").click(function(){
 	var num = parseInt($("#num").val(), 10);
 	let result = "";
 	var max = 30;
@@ -42,27 +40,34 @@ $("#btn").click(function(){
 		if(data && data.output){
 			result = parseInt(data.output, 10);
 			$("#resultSpan").text(result);
-
-			
-			
 		}
+		$("#resultSpan").text(radius);
 	});
 
 
-});
+});*/
 
 $('#big').click( function() {
 	radius *= 1.5;
-	changeradius(radius);	
+	changeradius(radius);
+	
+	$.get( "http://127.0.0.1:1337/api?argv="+ radius, function( data ) {
+		if(data){
+			//result = parseInt(data.output, 10);	
+			$("#resultSpan").text("radius:" + radius);
+		}
+	});
 });
 $('#small').click( function(){	
 	radius /= 1.5;
 	changeradius(radius);		
-});
 
-
-$('#radius').change(function() {
-  $('#radiusPrint').text($(this).val());
+	$.get( "http://127.0.0.1:1337/api?argv="+ radius, function( data ) {
+		if(data){
+			//result = parseInt(data.output, 10);
+			$("#resultSpan").text("radius:" + radius);
+		}
+	});
 });
 
 
@@ -112,7 +117,7 @@ function init() {
 	
 	//createShape(1);
 	//scene.add(obj);
-	$("#resultSpan").text("1");
+	$("#resultSpan").text("radius:" + radius);
 	
 }
 
@@ -130,11 +135,20 @@ function animate() {
 
 	pos.add(vel.clone().multiplyScalar(dt));
 	if (pos.x > 20-10*radius || pos.x < -140+10*radius){
+		if(pos.x > 20-10*radius)
+			pos.x = 20-10*radius;
+		if(pos.x < -140+10*radius)
+			pos.x = -140+10*radius;
+			
 		vel.x *= -1;
 		circle.material.color.setHSL (Math.random()*360, 0.7, 0.5);
-
 	}
 	if (pos.y > 60-10*radius || pos.y < -100+10*radius){
+		if(pos.y > 60-10*radius)
+			pos.y = 60-10*radius;
+		if(pos.y < -100+10*radius)
+			pos.y = -100+10*radius;
+	
 		vel.y *= -1;
 		circle.material.color.setHSL (Math.random()*360, 0.7, 0.5);
 	}
