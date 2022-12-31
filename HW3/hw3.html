@@ -11,14 +11,23 @@
 </head>
 
 <body>
-<script src="https://threejs.org/build/three.min.js"></script>
-<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://jyunming-chen.github.io/tutsplus/js/KeyboardState.js"></script>
+    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@latest/build/three.module.js"
+                }
+            }
+    </script>
 
 
-<script src="Light.js"></script> 
-<script src="wall.js"></script> 
+	<script  src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://jyunming-chen.github.io/tutsplus/js/KeyboardState.js"></script>
+
+
+<!--script src="Light.js"></script--> 
+<!--script src="wall.js"></script--> 
 
 <style>
 	#info {
@@ -38,7 +47,209 @@
 
 
  
-<script>
+<script type = "module">
+
+	import * as THREE from 'three';
+	import { OrbitControls } from 'https://unpkg.com/three@latest/examples/jsm/controls/OrbitControls.js';
+	
+	
+	
+	class wall{
+	constructor(){
+		//walls
+		this.walls = new THREE.Group();
+		
+		//1
+		buildWall(1000, 20, this.walls);
+		this.walls.children[0].position.set(-490, 75, 0);
+		this.walls.children[0].rotation.z = Math.PI/2;
+		//1.2
+		buildWall(1000, 20, this.walls);
+		this.walls.children[1].position.set(0, 75, -490);
+		//1.3
+		buildWall(1000, 20, this.walls);
+		this.walls.children[2].position.set(490, 75, 0);
+		this.walls.children[2].rotation.z = Math.PI/2;
+		//2
+		buildWall(350, 20, this.walls);
+		this.walls.children[3].position.set(-325, 75, 490);
+		//2.2
+		buildWall(350, 20, this.walls);
+		this.walls.children[4].position.set(325, 75, 490);
+		//3
+		let wall3 = new THREE.Mesh(new THREE.BoxGeometry(180, 100, 5), new THREE.MeshLambertMaterial({color : 0xffffff}));
+		this.walls.add(wall3);
+		wall3.position.set(0, 50, 257.5);
+		//wall3.
+		//4
+		buildWall(200, 20, this.walls);
+		this.walls.children[6].position.set(-160, 75, 160);
+		this.walls.children[6].rotation.z = Math.PI/2;
+		//4.2
+		buildWall(200, 20, this.walls);
+		this.walls.children[7].position.set(160, 75, 160);
+		this.walls.children[7].rotation.z = Math.PI/2;
+		//5
+		buildWall(300, 60, this.walls);
+		this.walls.children[8].position.set(310, 75, 200);
+		this.walls.children[8].rotation.z = Math.PI/2;
+		//6
+		buildWall(370, 20, this.walls);
+		this.walls.children[9].position.set(205, 75, -30);
+		//7
+		buildWall(370, 20, this.walls);
+		this.walls.children[10].position.set(30, 75, -205);
+		this.walls.children[10].rotation.z = Math.PI/2;
+		//8
+		buildWall(200, 20, this.walls);
+		this.walls.children[11].position.set(-290, 75, -380);
+		this.walls.children[11].rotation.z = Math.PI/2;
+		//8.2
+		buildWall(200, 20, this.walls);
+		this.walls.children[12].position.set(-290, 75, 20);
+		this.walls.children[12].rotation.z = Math.PI/2;
+		//8.3
+		buildWall(200, 20, this.walls);
+		this.walls.children[13].position.set(-390, 75, 110);
+		//9
+		let wall9 = new THREE.Mesh(new THREE.BoxGeometry(10, 100, 150), new THREE.MeshLambertMaterial({color : 0xffffff}));
+		this.walls.add(wall9);
+		wall9.position.set(-392.5, 50, -285);
+		//9.2
+		let w9 = wall9.clone();
+		this.walls.add(w9);
+		w9.position.set(-392.5, 50, -105);
+	}
+}
+
+
+function buildWall(l, w, walls){
+	let wall = new THREE.Mesh(new THREE.BoxGeometry(l, w, 150), new THREE.MeshLambertMaterial({color : 0xffffff}));
+	wall.rotation.x = Math.PI/2;
+	walls.add(wall);
+}
+
+
+class Light{
+	constructor(){
+		//燈線
+		this.tipe = new THREE.Group();
+		
+		this.tipe1 = new THREE.Mesh(new THREE.RingGeometry(615, 620, 4, 6, Math.PI/4), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe1.position.y = 145;
+		this.tipe1.rotation.x = Math.PI/2;
+		
+		this.tipe2 = new THREE.Mesh(new THREE.PlaneGeometry(5, 600), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe2.position.set(-341.5, 145, -180);
+		this.tipe2.rotation.x = Math.PI/2;
+		
+		this.tipe3 = new THREE.Mesh(new THREE.PlaneGeometry(5, 500), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe3.position.set(-22, 145, -230);
+		this.tipe3.rotation.x = Math.PI/2;
+		
+		this.tipe4 = this.tipe3.clone();
+		this.tipe4.rotation.z = Math.PI/2;
+		this.tipe4.position.set(230, 145, 22);
+		
+		this.tipe5 = new THREE.Mesh(new THREE.PlaneGeometry(5, 375), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe5.position.set(107.5, 145, -290);
+		this.tipe5.rotation.x = Math.PI/2;
+		
+		this.tipe6 = this.tipe5.clone();
+		this.tipe6.rotation.z = Math.PI/2;
+		this.tipe6.position.set(290, 145, -108);
+		
+		this.tipe7 = new THREE.Mesh(new THREE.PlaneGeometry(5, 680), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe7.position.set(-221.5, 145, -140);
+		this.tipe7.rotation.x = Math.PI/2;
+		
+		this.tipe8 = new THREE.Mesh(new THREE.PlaneGeometry(5, 260), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe8.position.set(-355, 145, 170);
+		this.tipe8.rotation.x = Math.PI/2;
+		this.tipe8.rotation.z = Math.PI/2;
+		
+		this.tipe9 = new THREE.Mesh(new THREE.PlaneGeometry(5, 200), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe9.position.set(-120, 145, 160);
+		this.tipe9.rotation.x = Math.PI/2;
+		
+		this.tipe10 = new THREE.Mesh(new THREE.PlaneGeometry(5, 200), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe10.position.set(120, 145, 160);
+		this.tipe10.rotation.x = Math.PI/2;
+		
+		this.tipe11 = new THREE.Mesh(new THREE.PlaneGeometry(5, 240), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe11.position.set(0, 145, 257.5);
+		this.tipe11.rotation.x = Math.PI/2;
+		this.tipe11.rotation.z = Math.PI/2;
+		
+		this.tipe12 = new THREE.Mesh(new THREE.PlaneGeometry(5, 530), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
+		this.tipe12.position.set(220, 145, 230);
+		this.tipe12.rotation.x = Math.PI/2;
+		
+		this.tipe.add(this.tipe1, this.tipe2, this.tipe3, this.tipe4, this.tipe5
+		, this.tipe6, this.tipe7, this.tipe8, this.tipe9, this.tipe10, this.tipe11, this.tipe12);
+		
+		//light
+		this.switchL = true;
+		this.light = new THREE.Group();
+		
+		//1
+		this.light.add(makelight(-430, 250, -480, 250));
+		//2
+		this.light.add(makelight(-430, -250, -480, -250));
+		//3
+		this.light.add(makelight(-390, 155, -390, 110));
+		//4
+		this.light.add(makelight(0, 280, 0, 260));
+		//5
+		this.light.add(makelight(220, 200, 280, 200));
+		//6
+		this.light.add(makelight(415, 200, 480, 200));
+		//7
+		this.light.add(makelight(250, -415, 250, -480));
+		//8
+		this.light.add(makelight(-22, -230, 10, -230));
+		//9
+		this.light.add(makelight(300, -108, 300, -30));
+		
+	}
+	
+	
+}
+
+function makelight(x, z, tx, tz){
+		
+	let light = new THREE.Group();
+		
+	//color 颜色, intensity 强度, distance 距离, angle 散射角, penumbra 衰减百分比, decay 衰减
+	const spotLight = new THREE.SpotLight(  0xffffff, 10, 150, 0.3, 0.5, 2);
+	spotLight.position.set( x, 145, z );
+	spotLight.castShadow = true; // 光源產生陰影
+		
+	const pointlight = new THREE.PointLight(0xCEC8A0, 0.03);
+	pointlight.position.set(x, 145, z);
+	
+	let target = new THREE.Object3D();
+	spotLight.target.position.set(tx, 80, tz);
+		
+	light.add(spotLight, spotLight.target, pointlight);
+		
+	return light;
+		
+	//const spotLightHelper = new THREE.SpotLightHelper( spotLight );
+	//scene.add( spotLightHelper);
+}
+
+function SP(light){
+	if(light.switchL === false){
+		scene.remove(light.light);
+	}
+	if(light.switchL === true){
+		scene.add(light.light);
+	}
+}
+	
+	
+	
 	var camera, scene, renderer;
 	var cameraHelper, camera3rd;
 	
@@ -83,7 +294,7 @@
 		camera.position.set(0, 1000, 800) ; // camera at (0,0,500)
 		camera3rd = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
 		
-		let controls = new THREE.OrbitControls(camera, renderer.domElement);
+		let controls = new OrbitControls(camera, renderer.domElement);
 		controls.enableKeys = false;
 		////////////////////////////////////////////////////////
 		const light = new THREE.AmbientLight( 0xcccccc );	//環境光 

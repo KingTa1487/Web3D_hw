@@ -66,6 +66,7 @@ class wall{
 	}
 }
 
+
 function buildWall(l, w, walls){
 	let wall = new THREE.Mesh(new THREE.BoxGeometry(l, w, 150), new THREE.MeshLambertMaterial({color : 0xffffff}));
 	wall.rotation.x = Math.PI/2;
