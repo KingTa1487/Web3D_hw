@@ -134,6 +134,7 @@ class Light{
 	constructor(){
 		//燈線
 		this.tipe = new THREE.Group();
+		this.pics = new THREE.Group();
 		
 		this.tipe1 = new THREE.Mesh(new THREE.RingGeometry(615, 620, 4, 6, Math.PI/4), new THREE.MeshLambertMaterial({color : 0x888888, side : THREE.DoubleSide}));
 		this.tipe1.position.y = 145;
@@ -194,22 +195,31 @@ class Light{
 		
 		//1
 		this.light.add(makelight(-430, 250, -480, 250));
+		picture(this.pics, -480, 250, 1);
 		//2
 		this.light.add(makelight(-430, -250, -480, -250));
+		picture(this.pics, -480, -250, 2);
 		//3
 		this.light.add(makelight(-390, 155, -390, 110));
+		picture(this.pics, -390, 110, 3);
 		//4
 		this.light.add(makelight(0, 280, 0, 260));
+		picture(this.pics, 0, 260, 4);
 		//5
 		this.light.add(makelight(220, 200, 280, 200));
+		picture(this.pics, 280, 200, 5);
 		//6
 		this.light.add(makelight(415, 200, 480, 200));
+		picture(this.pics, 480, 200, 6);
 		//7
 		this.light.add(makelight(250, -415, 250, -480));
+		picture(this.pics, 250, -480, 7);
 		//8
 		this.light.add(makelight(-22, -230, 10, -230));
+		picture(this.pics, 10, -230, 8);
 		//9
 		this.light.add(makelight(300, -108, 300, -30));
+		picture(this.pics, 300, -30, 9);
 		
 	}
 	
@@ -221,7 +231,7 @@ function makelight(x, z, tx, tz){
 	let light = new THREE.Group();
 		
 	//color 颜色, intensity 强度, distance 距离, angle 散射角, penumbra 衰减百分比, decay 衰减
-	const spotLight = new THREE.SpotLight(  0xffffff, 10, 150, 0.3, 0.5, 2);
+	const spotLight = new THREE.SpotLight(  0xffffff, 2, 150, 0.4, 0.5, 2);
 	spotLight.position.set( x, 145, z );
 	spotLight.castShadow = true; // 光源產生陰影
 		
@@ -246,6 +256,117 @@ function SP(light){
 	if(light.switchL === true){
 		scene.add(light.light);
 	}
+}
+
+function picture(pics, x, z, i){
+	switch(i){
+		case 1:
+			let map1 = new THREE.TextureLoader().load("https://i.imgur.com/JzqcXrr.jpg");
+			let mat1 = new THREE.MeshLambertMaterial({
+				map: map1,
+				side: THREE.DoubleSide
+			});
+			let pic1 = new THREE.Mesh(new THREE.PlaneGeometry(50, 50), mat1);
+			pic1.rotation.y = Math.PI/2;
+			pic1.position.set(x+1, 80, z+10);
+			pics.add(pic1);
+			
+			break;
+		case 2:
+			let map2 = new THREE.TextureLoader().load("https://i.imgur.com/1bntY8y.jpg");
+			let mat2 = new THREE.MeshLambertMaterial({
+				map: map2,
+				side: THREE.DoubleSide
+			});
+			let pic2 = new THREE.Mesh(new THREE.PlaneGeometry(70, 40), mat2);
+			pic2.rotation.y = Math.PI/2;
+			pic2.position.set(x+1, 80, z);
+			pics.add(pic2);
+			
+			break;
+		case 3:
+			let map3 = new THREE.TextureLoader().load("https://i.imgur.com/s9jQv5T.jpg");
+			let mat3 = new THREE.MeshLambertMaterial({
+				map: map3,
+				side: THREE.DoubleSide
+			});
+			let pic3 = new THREE.Mesh(new THREE.PlaneGeometry(30, 40), mat3);
+			pic3.position.set(x, 80, z+11);
+			pics.add(pic3);
+			
+			break;
+		case 4:
+			let map4 = new THREE.TextureLoader().load("https://i.imgur.com/uu4fp7n.jpg");
+			let mat4 = new THREE.MeshLambertMaterial({
+				map: map4,
+				side: THREE.DoubleSide
+			});
+			let pic4 = new THREE.Mesh(new THREE.PlaneGeometry(50, 100), mat4);
+			pic4.position.set(x, 50, z+1);
+			pics.add(pic4);
+			
+			break;
+		case 5:
+			let map5 = new THREE.TextureLoader().load("https://i.imgur.com/vmTrN2x.jpg");
+			let mat5 = new THREE.MeshLambertMaterial({
+				map: map5,
+				side: THREE.DoubleSide
+			});
+			let pic5 = new THREE.Mesh(new THREE.PlaneGeometry(50, 70), mat5);
+			pic5.rotation.y = Math.PI/2;
+			pic5.position.set(x-10, 80, z);
+			pics.add(pic5);
+			
+			break;
+		case 6:
+			let map6 = new THREE.TextureLoader().load("https://i.imgur.com/ix24cdm.jpg");
+			let mat6 = new THREE.MeshLambertMaterial({
+				map: map6,
+				side: THREE.DoubleSide
+			});
+			let pic6 = new THREE.Mesh(new THREE.PlaneGeometry(50, 60), mat6);
+			pic6.rotation.y = Math.PI/2;
+			pic6.position.set(x-10, 80, z);
+			pics.add(pic6);
+			
+			break;
+		case 7:
+			let map7 = new THREE.TextureLoader().load("https://i.imgur.com/Iiysnkk.jpg");
+			let mat7 = new THREE.MeshLambertMaterial({
+				map: map7,
+				side: THREE.DoubleSide
+			});
+			let pic7 = new THREE.Mesh(new THREE.PlaneGeometry(80, 40), mat7);
+			pic7.position.set(x, 80, z+1);
+			pics.add(pic7);
+			
+			break;
+		case 8:
+			let map8 = new THREE.TextureLoader().load("https://i.imgur.com/T4e4ntZ.jpg");
+			let mat8 = new THREE.MeshLambertMaterial({
+				map: map8,
+				side: THREE.DoubleSide
+			});
+			let pic8 = new THREE.Mesh(new THREE.PlaneGeometry(100, 60), mat8);
+			pic8.rotation.y = Math.PI/2;
+			pic8.position.set(x, 80, z);
+			pics.add(pic8);
+			
+			break;
+		case 9:
+			let map9 = new THREE.TextureLoader().load("https://i.imgur.com/j5SNZCq.jpg");
+			let mat9 = new THREE.MeshLambertMaterial({
+				map: map9,
+				side: THREE.DoubleSide
+			});
+			let pic9 = new THREE.Mesh(new THREE.PlaneGeometry(60, 100), mat9);
+			pic9.position.set(x, 80, z-11);
+			pics.add(pic9);
+			
+			break;
+			
+	}
+
 }
 	
 	
@@ -317,7 +438,7 @@ function SP(light){
 		human.rotation.z = -Math.PI/2;
 		
 		
-		scene.add( light, lightset.tipe, lightset.light);
+		scene.add( light, lightset.tipe, lightset.light, lightset.pics);
 		
 		//chairs
 		//1
